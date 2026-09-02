@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype 2 &mdash; Sukoon | Sarvar Nohh Dargah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#fbf9f5; --sand:#ece5d8; --sand-2:#dcd2c0; --teal:#4a7c6f; --teal-dk:#33584f;
+  --ink:#242220; --muted:#7d7568; --line:#ded6c8;
+  --maxw:1100px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ivory);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+.wide{max-width:1340px;margin:0 auto;padding:0 26px}
+h1,h2,h3,h4,.disp{font-family:"Cormorant Garamond",Georgia,serif;font-weight:400;letter-spacing:.3px}
+.kicker{font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--teal);font-weight:500}
+
+header{padding:34px 0 22px;text-align:center}
+.mark{font-family:"Cormorant Garamond",serif;font-size:2.1rem;letter-spacing:1px;line-height:1.1}
+.mark span{display:block;font-family:Inter,sans-serif;font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-top:9px}
+.hairline{height:1px;background:var(--line);margin:22px 0 0}
+
+nav.tabs{position:sticky;top:0;z-index:60;background:rgba(251,249,245,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tablist{display:flex;justify-content:center;gap:34px;overflow-x:auto;padding:0 26px}
+.tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;padding:16px 2px;cursor:pointer;
+  font-family:Inter,sans-serif;font-size:.68rem;letter-spacing:2.6px;text-transform:uppercase;color:var(--muted);font-weight:500;
+  white-space:nowrap;transition:.2s}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{color:var(--teal-dk);border-bottom-color:var(--teal)}
+
+.panel{display:none}
+.panel.active{display:block;animation:rise .4s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.ph{background:linear-gradient(160deg,#e7dfd0,#d7cdb9);display:grid;place-items:center;text-align:center;color:#8a8171;padding:16px}
+.ph span{font-size:.6rem;letter-spacing:2.4px;text-transform:uppercase;font-weight:500;line-height:2}
+.ph.tall{aspect-ratio:3/4}.ph.wide{aspect-ratio:16/9}.ph.sq{aspect-ratio:1/1}.ph.pano{aspect-ratio:21/9}
+
+/* hero */
+.hero{position:relative;margin-top:6px}
+.hero .band{overflow:hidden}
+.hero .card{background:var(--ivory);max-width:600px;margin:-96px auto 0;position:relative;padding:48px 52px;text-align:center;border:1px solid var(--line)}
+.hero h2{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.12;margin:14px 0 10px}
+.hero .ur{font-family:"Noto Nastaliq Urdu",serif;direction:rtl;font-size:1.2rem;line-height:2.4;color:var(--teal-dk);margin-bottom:14px}
+.hero p{color:var(--muted);font-size:.94rem;margin-bottom:24px}
+.lnk{display:inline-block;font-size:.68rem;letter-spacing:2.6px;text-transform:uppercase;font-weight:500;
+  border-bottom:1px solid var(--teal);padding-bottom:4px;color:var(--teal-dk);cursor:pointer;background:none;border-top:0;border-left:0;border-right:0;font-family:Inter,sans-serif}
+.lnk:hover{color:var(--ink);border-color:var(--ink)}
+
+section.block{padding:76px 0}
+section.block.tint{background:var(--sand);}
+.sechead{max-width:560px;margin-bottom:44px}
+.sechead.center{margin-left:auto;margin-right:auto;text-align:center}
+.sechead h3{font-size:clamp(1.8rem,3.4vw,2.6rem);margin:10px 0 12px}
+.sechead p{color:var(--muted);font-size:.92rem}
+.num{font-family:"Cormorant Garamond",serif;font-size:.95rem;color:var(--sand-2);letter-spacing:2px}
+
+.grid{display:grid;gap:26px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+
+.tile figcaption{padding:12px 2px 0;font-size:.78rem;color:var(--muted);letter-spacing:.4px}
+.masonry{column-count:3;column-gap:22px}
+.masonry figure{break-inside:avoid;margin-bottom:22px}
+
+/* gadi rows */
+.row{display:grid;grid-template-columns:132px 1fr auto;gap:30px;align-items:center;padding:30px 0;border-top:1px solid var(--line)}
+.row:last-child{border-bottom:1px solid var(--line)}
+.circle{width:132px;height:132px;border-radius:50%;overflow:hidden}
+.circle .ph{width:100%;height:100%;aspect-ratio:auto}
+.row h4{font-size:1.55rem;line-height:1.2}
+.row .meta{font-size:.66rem;letter-spacing:2.4px;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.row p{font-size:.88rem;color:var(--muted);max-width:60ch}
+
+/* shajra centre line */
+.chain{max-width:760px;margin:0 auto;position:relative}
+.chain::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--sand-2)}
+.link{position:relative;width:calc(50% - 34px);padding:20px 24px;background:var(--ivory);border:1px solid var(--line);margin-bottom:24px}
+.link:nth-child(even){margin-left:calc(50% + 34px)}
+.link::after{content:"";position:absolute;top:26px;width:9px;height:9px;background:var(--teal);border-radius:50%}
+.link:nth-child(odd)::after{right:-38px}
+.link:nth-child(even)::after{left:-38px}
+.link h4{font-size:1.3rem}
+.link .meta{font-size:.64rem;letter-spacing:2.4px;text-transform:uppercase;color:var(--teal)}
+.link p{font-size:.84rem;color:var(--muted)}
+
+/* events list */
+.elist{border-top:1px solid var(--line)}
+.erow{display:grid;grid-template-columns:130px 1fr 150px;gap:24px;padding:24px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.erow .when{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--teal-dk)}
+.erow .when small{display:block;font-family:Inter,sans-serif;font-size:.62rem;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted)}
+.erow h4{font-size:1.3rem;margin-bottom:4px}
+.erow p{font-size:.85rem;color:var(--muted)}
+.erow .tag{font-size:.62rem;letter-spacing:2.2px;text-transform:uppercase;color:var(--teal);text-align:right}
+
+/* library */
+.blist{display:grid;grid-template-columns:repeat(2,1fr);gap:0 46px}
+.brow{display:grid;grid-template-columns:56px 1fr auto;gap:18px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.brow h4{font-size:1.15rem}
+.brow p{font-size:.78rem;color:var(--muted)}
+
+/* location */
+.mapbox{aspect-ratio:16/10;background:linear-gradient(160deg,#e7dfd0,#d7cdb9);display:grid;place-items:center;color:#8a8171;text-align:center;padding:20px}
+.dl{list-style:none}
+.dl li{padding:14px 0;border-bottom:1px solid var(--line)}
+.dl b{display:block;font-size:.62rem;letter-spacing:2.6px;text-transform:uppercase;color:var(--teal);font-weight:500;margin-bottom:3px}
+.dl span{font-size:.92rem;color:var(--ink);font-weight:300}
+
+footer{background:var(--teal-dk);color:#d8e2de;padding:60px 0 28px;margin-top:20px}
+footer .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:36px;margin-bottom:36px}
+footer h5{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:#fff;margin-bottom:12px;font-weight:400}
+footer a,footer p{display:block;font-size:.85rem;padding:3px 0;color:#c3d1cc}
+footer a:hover{color:#fff}
+.copy{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;font-size:.72rem;letter-spacing:1.6px;text-transform:uppercase;text-align:center;color:#9fb2ac}
+
+.note{border:1px dashed var(--sand-2);padding:14px 18px;font-size:.8rem;color:var(--muted);margin-bottom:34px;background:#fff}
+
+@media(max-width:900px){
+  .g4,.g3{grid-template-columns:repeat(2,1fr)}
+  .masonry{column-count:2}
+  .blist{grid-template-columns:1fr}
+  .hero .card{margin:-60px 26px 0;padding:34px 28px}
+  footer .cols{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .masonry{column-count:1}
+  .row{grid-template-columns:84px 1fr;gap:18px}
+  .circle{width:84px;height:84px}
+  .erow{grid-template-columns:96px 1fr}
+  .erow .tag{display:none}
+  .chain::before{left:8px}
+  .link,.link:nth-child(even){width:100%;margin-left:0;padding-left:34px}
+  .link:nth-child(odd)::after,.link:nth-child(even)::after{left:4px;right:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="mark">Sarvar Nohh Dargah<span>Astana-e-Aliya &middot; Est. [Year]</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tablist" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-t="home">Home</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="gallery">Gallery</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="gadi">Gadi Nasheen</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="shajra">Shajra</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="events">Events</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="library">Library</button>
+    <button class="tab" role="tab" aria-selected="false" data-t="people">Personalities</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<div class="panel active" id="p-home">
+  <div class="hero">
+    <div class="band"><div class="ph pano"><span>Main Dargah Photograph &mdash; panoramic<br>2400 &times; 1000 px</span></div></div>
+    <div class="card">
+      <div class="kicker">Welcome &middot; Khush Aamdeed</div>
+      <h2>A Place of Stillness<br>and Remembrance</h2>
+      <div class="ur">&#1583;&#1585;&#1711;&#1575;&#1729; &#1587;&#1585;&#1608;&#1585; &#1606;&#1608;&#1581;</div>
+      <p>[Placeholder &mdash; two short lines introducing the Dargah and the spiritual tribe it serves. Replace with the family&rsquo;s approved wording.]</p>
+      <button class="lnk" onclick="go('gallery')">Enter the Gallery</button>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note"><b>Prototype note:</b> all photo blocks are placeholder frames sized for the real images.</div>
+      <div class="sechead center">
+        <div class="num">&mdash; 01 &mdash;</div>
+        <h3>Glimpses of the Shrine</h3>
+        <p>A short selection. The full archive lives in the Gallery tab.</p>
+      </div>
+      <div class="grid g3">
+        <figure class="tile"><div class="ph tall"><span>Shrine Exterior</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph tall"><span>Inner Sanctum</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph tall"><span>Urs Gathering</span></div><figcaption>[Caption]</figcaption></figure>
+      </div>
+      <div style="text-align:center;margin-top:38px"><button class="lnk" onclick="go('gallery')">View All Photographs</button></div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <div class="sechead center">
+        <div class="num">&mdash; 02 &mdash;</div>
+        <h3>The Gadi Nasheen</h3>
+        <p>The custodians of the shrine, past and present.</p>
+      </div>
+      <div class="grid g3">
+        <figure class="tile" style="text-align:center"><div class="ph tall"><span>Portrait</span></div>
+          <figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--ink);display:block">[Founder]</b>[Years]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="ph tall"><span>Portrait</span></div>
+          <figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--ink);display:block">[Name]</b>[Years]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="ph tall"><span>Portrait</span></div>
+          <figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--ink);display:block">[Present]</b>[Year] &ndash; Present</figcaption></figure>
+      </div>
+      <div style="text-align:center;margin-top:38px"><button class="lnk" onclick="go('gadi')">Read Their Lives</button></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="num">&mdash; 03 &mdash;</div><h3>Location &amp; Timings</h3></div>
+      <div class="grid g2" style="align-items:center;gap:44px">
+        <div class="mapbox"><span style="font-size:.6rem;letter-spacing:2.4px;text-transform:uppercase">Google Map embed<br>added during development</span></div>
+        <ul class="dl">
+          <li><b>Address</b><span>[Full postal address of the Dargah]</span></li>
+          <li><b>Open Daily</b><span>[e.g. 5:00 AM &ndash; 11:00 PM]</span></li>
+          <li><b>Langar Timings</b><span>[Community meal timings]</span></li>
+          <li><b>Contact</b><span>[Phone] &middot; [WhatsApp]</span></li>
+          <li><b>Getting Here</b><span>[Nearest stop / station / landmark]</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ GALLERY ============ -->
+<div class="panel" id="p-gallery">
+  <section class="block">
+    <div class="wide">
+      <div class="sechead center"><div class="kicker">Album</div><h3>Photo Gallery</h3>
+        <p>Filter by album. A click opens the full-screen viewer in the live site.</p></div>
+      <div style="display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-bottom:44px">
+        <button class="lnk">All</button><button class="lnk" style="border-color:var(--line);color:var(--muted)">The Shrine</button>
+        <button class="lnk" style="border-color:var(--line);color:var(--muted)">Urs</button>
+        <button class="lnk" style="border-color:var(--line);color:var(--muted)">Langar</button>
+        <button class="lnk" style="border-color:var(--line);color:var(--muted)">Historical</button>
+      </div>
+      <div class="masonry">
+        <figure class="tile"><div class="ph tall"><span>Photo 01</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph sq"><span>Photo 02</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph wide"><span>Photo 03</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph sq"><span>Photo 04</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph tall"><span>Photo 05</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph wide"><span>Photo 06</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph wide"><span>Photo 07</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph tall"><span>Photo 08</span></div><figcaption>[Caption]</figcaption></figure>
+        <figure class="tile"><div class="ph sq"><span>Photo 09</span></div><figcaption>[Caption]</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ GADI NASHEEN ============ -->
+<div class="panel" id="p-gadi">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="kicker">Custodians</div><h3>Gadi Nasheen</h3>
+        <p>Portrait, dates and a short account for each custodian of the Gadi.</p></div>
+      <div class="row">
+        <div class="circle"><div class="ph"><span>Portrait</span></div></div>
+        <div><div class="meta">Present Custodian</div><h4>[Name of Current Gadi Nasheen]</h4>
+          <p>[Short biography &mdash; education, bai&rsquo;at, the year he took the Gadi, and the work he leads today.]</p></div>
+        <div class="meta">[Year]&ndash;Now</div>
+      </div>
+      <div class="row">
+        <div class="circle"><div class="ph"><span>Portrait</span></div></div>
+        <div><div class="meta">Founder</div><h4>[Name of Founder]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="meta">[Years]</div>
+      </div>
+      <div class="row">
+        <div class="circle"><div class="ph"><span>Portrait</span></div></div>
+        <div><div class="meta">Second Custodian</div><h4>[Name]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="meta">[Years]</div>
+      </div>
+      <div class="row">
+        <div class="circle"><div class="ph"><span>Portrait</span></div></div>
+        <div><div class="meta">Third Custodian</div><h4>[Name]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="meta">[Years]</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ SHAJRA ============ -->
+<div class="panel" id="p-shajra">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="kicker">Silsila Shareef</div><h3>Shajra</h3>
+        <p>The spiritual chain, generation by generation.</p></div>
+      <div class="chain">
+        <div class="link"><div class="meta">Generation 1</div><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="link"><div class="meta">Generation 2</div><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="link"><div class="meta">Generation 3</div><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="link"><div class="meta">Generation 4</div><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="link"><div class="meta">Generation 5</div><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="link"><div class="meta">Present</div><h4>[Name]</h4><p>Current Gadi Nasheen</p></div>
+      </div>
+      <div style="text-align:center;margin-top:40px"><button class="lnk">Download Full Shajra (PDF)</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ EVENTS ============ -->
+<div class="panel" id="p-events">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="kicker">Taqreebaat</div><h3>Events &amp; Urs Calendar</h3>
+        <p>Dates shown in Hijri with the Gregorian equivalent.</p></div>
+      <div class="elist">
+        <div class="erow"><div class="when">12 Rabi<small>[Greg. date]</small></div>
+          <div><h4>[Annual Urs Mubarak]</h4><p>[Timings, programme, langar arrangements.]</p></div><div class="tag">Annual</div></div>
+        <div class="erow"><div class="when">27 Rajab<small>[Greg. date]</small></div>
+          <div><h4>[Shab-e-Meraj Mehfil]</h4><p>[Short description placeholder.]</p></div><div class="tag">Annual</div></div>
+        <div class="erow"><div class="when">15 Shaban<small>[Greg. date]</small></div>
+          <div><h4>[Shab-e-Barat Programme]</h4><p>[Short description placeholder.]</p></div><div class="tag">Annual</div></div>
+        <div class="erow"><div class="when">Ramzan<small>Whole month</small></div>
+          <div><h4>[Daily Iftar &amp; Langar]</h4><p>[Short description placeholder.]</p></div><div class="tag">Monthly</div></div>
+        <div class="erow"><div class="when">Thursday<small>After Maghrib</small></div>
+          <div><h4>[Weekly Mehfil-e-Zikr]</h4><p>[Short description placeholder.]</p></div><div class="tag">Weekly</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ LIBRARY ============ -->
+<div class="panel" id="p-library">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="kicker">Kutub Khana</div><h3>Library</h3>
+        <p>Books, malfuzat, naat collections and recorded bayan.</p></div>
+      <div class="blist">
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Book Title 1]</h4><p>[Author] &middot; Urdu &middot; [pages]</p></div><span class="kicker">PDF</span></div>
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Book Title 2]</h4><p>[Author] &middot; Urdu &middot; [pages]</p></div><span class="kicker">PDF</span></div>
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Book Title 3]</h4><p>[Author] &middot; Urdu &middot; [pages]</p></div><span class="kicker">PDF</span></div>
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Malfuzat Collection]</h4><p>[Compiler] &middot; Urdu</p></div><span class="kicker">PDF</span></div>
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Naat Sharif Collection]</h4><p>[Compiler] &middot; Urdu</p></div><span class="kicker">PDF</span></div>
+        <div class="brow"><div class="ph" style="aspect-ratio:3/4"><span></span></div><div><h4>[Audio Bayan Archive]</h4><p>[Speaker] &middot; MP3</p></div><span class="kicker">Audio</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PEOPLE ============ -->
+<div class="panel" id="p-people">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center"><div class="kicker">Mashaheer</div><h3>Famous Personalities</h3>
+        <p>Scholars, poets and devotees connected with the Dargah and the tribe.</p></div>
+      <div class="grid g4">
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Scholar]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Poet]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Sufi]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Philanthropist]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Author]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Qari]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Naat Khwan]</figcaption></figure>
+        <figure class="tile" style="text-align:center"><div class="circle" style="width:100%;height:auto;aspect-ratio:1"><div class="ph sq"><span>Portrait</span></div></div><figcaption><b style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);display:block">[Name]</b>[Elder]</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h5>Sarvar Nohh Dargah</h5><p>[One or two lines about the Dargah, its address and its mission.]</p></div>
+      <div><h5>Sections</h5>
+        <a href="#" onclick="go('gallery');return false">Photo Gallery</a>
+        <a href="#" onclick="go('gadi');return false">Gadi Nasheen</a>
+        <a href="#" onclick="go('shajra');return false">Shajra</a>
+        <a href="#" onclick="go('events');return false">Events</a>
+        <a href="#" onclick="go('library');return false">Library</a></div>
+      <div><h5>Contact</h5><a>[Phone]</a><a>[WhatsApp]</a><a>[Email]</a><a>[Facebook / YouTube]</a></div>
+    </div>
+    <div class="copy">&copy; <span id="yr"></span> Sarvar Nohh Dargah &nbsp;&middot;&nbsp; Prototype 2 &mdash; Sukoon</div>
+  </div>
+</footer>
+
+<script>
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.panel');
+  function go(id){
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', t.dataset.t === id ? 'true' : 'false'); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === 'p-' + id); });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ go(t.dataset.t); }); });
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

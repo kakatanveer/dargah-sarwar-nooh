@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype 4 &mdash; Silsila | Sarvar Nohh Dargah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PROTOTYPE 4 — "SILSILA"
+   Modern UI/UX · glass surfaces · scroll-reveal motion
+   ============================================================ */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --surface-2:#eef1ee;
+  --emerald:#0f6b4f; --emerald-2:#128863; --mint:#3fbf94;
+  --amber:#e0a428; --amber-2:#f7cd6b;
+  --ink:#121815; --muted:#66716b; --line:#e2e7e3;
+  --r:22px; --r-sm:14px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --shadow:0 1px 2px rgba(16,32,25,.05),0 12px 32px -8px rgba(16,32,25,.12);
+  --shadow-lg:0 2px 4px rgba(16,32,25,.06),0 28px 60px -12px rgba(16,32,25,.22);
+  --nav-h:66px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+  font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+h1,h2,h3,h4,.disp{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.02em;line-height:1.14}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;letter-spacing:2.4px;
+  text-transform:uppercase;color:var(--emerald)}
+.kicker::before{content:"";width:20px;height:1px;background:var(--amber)}
+
+/* ---------- ambient animated background ---------- */
+.aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.4;will-change:transform}
+.b1{width:520px;height:520px;background:#8ee0bf;top:-160px;left:-120px;animation:float1 22s var(--ease) infinite alternate}
+.b2{width:460px;height:460px;background:#ffd98a;top:8%;right:-140px;animation:float2 26s var(--ease) infinite alternate}
+.b3{width:420px;height:420px;background:#a8d8ff;bottom:-140px;left:34%;animation:float3 30s var(--ease) infinite alternate}
+@keyframes float1{to{transform:translate(120px,90px) scale(1.15)}}
+@keyframes float2{to{transform:translate(-100px,140px) scale(1.1)}}
+@keyframes float3{to{transform:translate(80px,-110px) scale(1.2)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(rgba(16,32,25,.10) 1px,transparent 1px);background-size:4px 4px}
+
+/* ---------- glass nav ---------- */
+.nav{position:sticky;top:0;z-index:80;padding:12px 0;transition:padding .4s var(--ease)}
+.nav.stuck{padding:8px 0}
+.navinner{display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.72);
+  backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid rgba(255,255,255,.7);box-shadow:var(--shadow);border-radius:999px;padding:8px 10px 8px 16px;
+  transition:box-shadow .4s var(--ease),background .4s var(--ease)}
+.nav.stuck .navinner{box-shadow:var(--shadow-lg);background:rgba(255,255,255,.86)}
+.logo{display:flex;align-items:center;gap:11px;flex:none;padding-right:6px}
+.logo .m{width:36px;height:36px;flex:none;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:17px;
+  background:linear-gradient(135deg,var(--emerald),var(--mint));box-shadow:0 6px 16px -4px rgba(15,107,79,.5);
+  transition:transform .5s var(--ease)}
+.logo:hover .m{transform:rotate(-8deg) scale(1.08)}
+.logo b{font-family:Fraunces,serif;font-size:.98rem;font-weight:600;white-space:nowrap;letter-spacing:-.01em}
+.logo small{display:block;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+.tabwrap{position:relative;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tabwrap::-webkit-scrollbar{display:none}
+.tablist{display:flex;gap:2px;position:relative;width:max-content;margin:0 auto}
+.pill{position:absolute;top:0;height:100%;border-radius:999px;
+  background:linear-gradient(135deg,var(--emerald),var(--emerald-2));z-index:0;
+  transition:transform .45s var(--ease),width .45s var(--ease);box-shadow:0 6px 18px -6px rgba(15,107,79,.7)}
+.tab{position:relative;z-index:1;background:none;border:0;padding:10px 17px;border-radius:999px;cursor:pointer;
+  font-size:.82rem;font-weight:600;color:var(--muted);white-space:nowrap;transition:color .3s var(--ease)}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{color:#fff}
+.navcta{flex:none;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-size:.78rem;
+  font-weight:600;cursor:pointer;transition:transform .35s var(--ease),background .3s}
+.navcta:hover{transform:translateY(-2px);background:var(--emerald)}
+
+/* ---------- reveal on scroll ---------- */
+[data-rv]{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+[data-rv].in{opacity:1;transform:none}
+[data-rv][data-dir=left]{transform:translateX(-32px)}
+[data-rv][data-dir=right]{transform:translateX(32px)}
+[data-rv][data-dir=scale]{transform:scale(.94)}
+[data-rv].in[data-dir]{transform:none}
+
+/* ---------- panels ---------- */
+.panel{display:none}
+.panel.active{display:block}
+.panel.active > *{animation:panelIn .6s var(--ease) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ---------- placeholder media ---------- */
+.ph{position:relative;overflow:hidden;border-radius:var(--r-sm);
+  background:linear-gradient(135deg,#e3e9e4,#d3dcd6 55%,#e6ded0);
+  display:grid;place-items:center;text-align:center;color:#7b857e;padding:18px}
+.ph::after{content:"";position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
+  animation:sheen 3.4s var(--ease) infinite}
+@keyframes sheen{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+.ph span{position:relative;z-index:1;font-size:.62rem;letter-spacing:2.2px;text-transform:uppercase;font-weight:700;line-height:1.9}
+.ph.tall{aspect-ratio:3/4}.ph.wide{aspect-ratio:16/10}.ph.sq{aspect-ratio:1/1}.ph.pano{aspect-ratio:2/1}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 40px;position:relative}
+.hero .grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+.hero h2{font-size:clamp(2.4rem,5.6vw,4.15rem);margin:18px 0 10px}
+.hero h2 .word{display:inline-block;opacity:0;transform:translateY(22px);
+  animation:wordIn .85s var(--ease) forwards}
+@keyframes wordIn{to{opacity:1;transform:none}}
+.hero h2 em{font-style:normal;background:linear-gradient(115deg,var(--emerald),var(--mint) 45%,var(--amber));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .ur{font-family:"Noto Nastaliq Urdu",serif;direction:rtl;font-size:1.3rem;line-height:2.5;color:var(--emerald);
+  opacity:0;animation:wordIn .9s .55s var(--ease) forwards}
+.hero p{color:var(--muted);font-size:1.02rem;max-width:50ch;margin:6px 0 30px;
+  opacity:0;animation:wordIn .9s .68s var(--ease) forwards}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:wordIn .9s .8s var(--ease) forwards}
+
+.btn{position:relative;overflow:hidden;border:0;border-radius:999px;padding:14px 28px;font-size:.85rem;font-weight:600;
+  cursor:pointer;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.btn.primary{background:linear-gradient(135deg,var(--emerald),var(--emerald-2));color:#fff;
+  box-shadow:0 10px 26px -10px rgba(15,107,79,.9)}
+.btn.primary:hover{transform:translateY(-3px);box-shadow:0 18px 38px -12px rgba(15,107,79,.85)}
+.btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1px solid var(--line);backdrop-filter:blur(8px)}
+.btn.ghost:hover{transform:translateY(-3px);border-color:var(--emerald);color:var(--emerald)}
+.btn.chip{padding:9px 18px;font-size:.76rem;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--muted)}
+.btn.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),
+  rgba(255,255,255,.35),transparent 60%);opacity:0;transition:opacity .35s}
+.btn:hover::after{opacity:1}
+
+/* hero media stack */
+.stack{position:relative}
+.stack .main{border-radius:28px;overflow:hidden;box-shadow:var(--shadow-lg);will-change:transform}
+.stack .main .ph{border-radius:0;aspect-ratio:4/5}
+.stack .chipcard{position:absolute;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:14px 18px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:12px;will-change:transform}
+.chipcard .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;font-size:15px;
+  background:linear-gradient(135deg,var(--amber-2),var(--amber));color:#4a3505}
+.chipcard b{display:block;font-size:.86rem;font-weight:700;line-height:1.3}
+.chipcard small{font-size:.7rem;color:var(--muted)}
+.cc1{left:-26px;top:16%;animation:bob 5s ease-in-out infinite}
+.cc2{right:-22px;bottom:16%;animation:bob 6.4s ease-in-out .7s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}
+.stat{background:rgba(255,255,255,.72);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.8);
+  border-radius:var(--r);padding:22px 24px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.stat:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.stat .n{font-family:Fraunces,serif;font-size:2.1rem;font-weight:700;color:var(--emerald);line-height:1}
+.stat .l{font-size:.74rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:7px}
+
+/* ---------- sections ---------- */
+section.block{padding:84px 0}
+.sechead{max-width:620px;margin-bottom:44px}
+.sechead.center{margin-left:auto;margin-right:auto;text-align:center}
+.sechead h3{font-size:clamp(1.9rem,3.8vw,2.85rem);margin:14px 0 12px}
+.sechead p{color:var(--muted);font-size:.98rem}
+
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  transition:transform .55s var(--ease),box-shadow .55s var(--ease),border-color .4s}
+.card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:transparent}
+.card .ph{border-radius:0;transition:transform .8s var(--ease)}
+.card:hover .ph{transform:scale(1.05)}
+.card .media{overflow:hidden}
+.card .body{padding:20px 22px}
+.card h4{font-size:1.16rem;margin-bottom:5px}
+.card p{font-size:.87rem;color:var(--muted)}
+.badge{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;background:rgba(15,107,79,.09);color:var(--emerald);margin-bottom:9px}
+.badge.amber{background:rgba(224,164,40,.15);color:#8a6206}
+
+/* gallery mosaic with hover overlay */
+.mosaic{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.cell{position:relative;overflow:hidden;border-radius:var(--r);cursor:pointer;
+  transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
+.cell:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.cell .ph{height:100%;border-radius:0;aspect-ratio:auto;transition:transform .9s var(--ease)}
+.cell:hover .ph{transform:scale(1.08)}
+.cell .ov{position:absolute;inset:0;display:flex;align-items:flex-end;padding:20px;
+  background:linear-gradient(transparent 45%,rgba(9,20,15,.82));opacity:0;transition:opacity .45s var(--ease)}
+.cell:hover .ov{opacity:1}
+.cell .ov span{color:#fff;font-size:.84rem;font-weight:600;transform:translateY(10px);
+  transition:transform .45s var(--ease)}
+.cell:hover .ov span{transform:none}
+.sp3{grid-column:span 3;min-height:300px}
+.sp2{grid-column:span 2;min-height:230px}
+.sp4{grid-column:span 4;min-height:280px}
+
+/* gadi nasheen — modern list with hover expand */
+.gn{display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;padding:26px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:14px;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),background .4s}
+.gn:hover{transform:translateX(8px);box-shadow:var(--shadow-lg);border-color:transparent}
+.gn .av{width:88px;height:88px;border-radius:26px;overflow:hidden;flex:none;transition:border-radius .5s var(--ease)}
+.gn:hover .av{border-radius:50%}
+.gn .av .ph{width:100%;height:100%;aspect-ratio:auto;border-radius:0}
+.gn h4{font-size:1.32rem}
+.gn p{font-size:.87rem;color:var(--muted);max-width:64ch;margin-top:4px}
+.gn .yr{font-size:.74rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);
+  white-space:nowrap;padding:9px 15px;border:1px solid var(--line);border-radius:999px}
+
+/* shajra — animated chain */
+.chain{max-width:780px;margin:0 auto;position:relative;padding-left:44px}
+.chain .track{position:absolute;left:15px;top:14px;bottom:14px;width:2px;background:var(--line);overflow:hidden}
+.chain .track i{position:absolute;inset:0;transform-origin:top;transform:scaleY(0);
+  background:linear-gradient(var(--emerald),var(--mint),var(--amber));transition:transform 1.6s var(--ease)}
+.chain.in .track i{transform:scaleY(1)}
+.node{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px 24px;margin-bottom:16px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.node:hover{transform:translateX(6px);box-shadow:var(--shadow-lg)}
+.node::before{content:"";position:absolute;left:-37px;top:26px;width:16px;height:16px;border-radius:50%;
+  background:var(--surface);border:3px solid var(--emerald);
+  box-shadow:0 0 0 0 rgba(15,107,79,.35);animation:pulse 2.6s ease-out infinite}
+.node:nth-child(3)::before{animation-delay:.3s}
+.node:nth-child(4)::before{animation-delay:.6s}
+.node:nth-child(5)::before{animation-delay:.9s}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(15,107,79,.32)}70%,100%{box-shadow:0 0 0 12px rgba(15,107,79,0)}}
+.node h4{font-size:1.24rem;margin:5px 0}
+.node p{font-size:.86rem;color:var(--muted)}
+
+/* events */
+.ev{display:grid;grid-template-columns:96px 1fr auto;gap:24px;align-items:center;padding:20px 24px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;
+  position:relative;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.ev::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(var(--emerald),var(--mint));transform:scaleY(0);transform-origin:bottom;
+  transition:transform .5s var(--ease)}
+.ev:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.ev:hover::before{transform:scaleY(1)}
+.ev .dt{text-align:center;background:linear-gradient(135deg,rgba(15,107,79,.08),rgba(63,191,148,.14));
+  border-radius:16px;padding:12px 8px}
+.ev .dt b{display:block;font-family:Fraunces,serif;font-size:1.6rem;color:var(--emerald);line-height:1}
+.ev .dt small{font-size:.64rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.ev h4{font-size:1.12rem}
+.ev p{font-size:.85rem;color:var(--muted)}
+
+/* library */
+.book{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
+.book:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:var(--shadow-lg)}
+.book .ph{border-radius:0;aspect-ratio:3/2}
+.book .body{padding:18px 20px}
+.book h4{font-size:1.02rem}
+.book p{font-size:.8rem;color:var(--muted)}
+.book .dl{display:inline-flex;align-items:center;gap:6px;margin-top:11px;font-size:.74rem;font-weight:700;
+  color:var(--emerald);letter-spacing:.6px}
+.book .dl i{font-style:normal;transition:transform .4s var(--ease)}
+.book:hover .dl i{transform:translateX(5px)}
+
+/* location */
+.mapbox{aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#e3e9e4,#d3dcd6);display:grid;place-items:center;color:#7b857e;text-align:center;padding:22px}
+.info{list-style:none}
+.info li{display:grid;grid-template-columns:22px 1fr;gap:14px;padding:15px 0;border-bottom:1px solid var(--line);
+  transition:padding-left .4s var(--ease)}
+.info li:hover{padding-left:8px}
+.info .ic{font-size:1rem;opacity:.7}
+.info b{display:block;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--emerald);font-weight:700}
+.info span{font-size:.92rem;color:var(--ink)}
+
+/* footer */
+footer{background:var(--ink);color:#c8d1cc;padding:64px 0 26px;margin-top:40px;border-radius:38px 38px 0 0}
+footer .cols{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;margin-bottom:40px}
+footer h5{font-family:Fraunces,serif;color:#fff;font-size:1.35rem;margin-bottom:12px}
+footer a,footer p{display:block;font-size:.87rem;padding:4px 0;color:#a9b4ae;transition:color .3s,transform .3s var(--ease)}
+footer a:hover{color:var(--amber-2);transform:translateX(4px)}
+.copy{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;font-size:.76rem;color:#79847e}
+
+.note{background:rgba(224,164,40,.12);border:1px solid rgba(224,164,40,.3);border-radius:16px;
+  padding:14px 20px;font-size:.85rem;color:#7a5807;margin-bottom:34px}
+
+/* scroll progress */
+.prog{position:fixed;top:0;left:0;height:3px;z-index:100;width:0%;
+  background:linear-gradient(90deg,var(--emerald),var(--mint),var(--amber));transition:width .12s linear}
+
+@media(max-width:1000px){
+  .hero .grid{grid-template-columns:1fr;gap:40px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .g4,.g3{grid-template-columns:repeat(2,1fr)}
+  .mosaic{grid-template-columns:repeat(4,1fr)}
+  .sp3,.sp4{grid-column:span 4}.sp2{grid-column:span 2}
+  .navcta{display:none}
+  footer .cols{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .mosaic{grid-template-columns:1fr}
+  .sp2,.sp3,.sp4{grid-column:span 1;min-height:220px}
+  .gn{grid-template-columns:64px 1fr;gap:16px;padding:18px}
+  .gn .av{width:64px;height:64px}
+  .gn .yr{grid-column:1/-1;justify-self:start}
+  .ev{grid-template-columns:74px 1fr}
+  .cc1,.cc2{display:none}
+  .logo b{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::after,*::before{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  [data-rv]{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grain"></div>
+
+<div class="nav" id="nav">
+  <div class="wrap">
+    <div class="navinner">
+      <a class="logo" href="#"><div class="m">&#9770;</div><div><b>Sarvar Nohh Dargah</b><small>Astana-e-Aliya</small></div></a>
+      <div class="tabwrap">
+        <div class="tablist" role="tablist">
+          <div class="pill" id="pill"></div>
+          <button class="tab" role="tab" aria-selected="true" data-t="home">Home</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="gallery">Gallery</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="gadi">Gadi Nasheen</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="shajra">Shajra</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="events">Events</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="library">Library</button>
+          <button class="tab" role="tab" aria-selected="false" data-t="people">Personalities</button>
+        </div>
+      </div>
+      <button class="navcta" onclick="alert('Language toggle: English / Urdu — wired during development')">&#1575;&#1585;&#1583;&#1608; / EN</button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ==================== HOME ==================== -->
+<div class="panel active" id="p-home">
+  <section class="hero">
+    <div class="wrap">
+      <div class="grid">
+        <div>
+          <span class="kicker">Khush Aamdeed &middot; Welcome</span>
+          <h2 id="heroline"></h2>
+          <div class="ur">&#1583;&#1585;&#1711;&#1575;&#1729; &#1587;&#1585;&#1608;&#1585; &#1606;&#1608;&#1581;</div>
+          <p>[Placeholder &mdash; one short paragraph introducing the Dargah, the spiritual tribe it serves, and the message of peace, service and remembrance it stands for. Replace with the family&rsquo;s approved wording.]</p>
+          <div class="acts">
+            <button class="btn primary" onclick="go('gallery')">Explore the Gallery</button>
+            <button class="btn ghost" onclick="go('gadi')">Meet the Gadi Nasheen</button>
+          </div>
+        </div>
+        <div class="stack" id="stack">
+          <div class="main" data-par="0.03"><div class="ph"><span>Main Dargah Photograph<br>portrait &middot; 1200 &times; 1500 px</span></div></div>
+          <div class="chipcard cc1"><div class="ic">&#9873;</div><div><b>[Location]</b><small>Open daily [5 AM &ndash; 11 PM]</small></div></div>
+          <div class="chipcard cc2"><div class="ic">&#9788;</div><div><b>Annual Urs</b><small>[12 Rabi-ul-Awwal]</small></div></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat" data-rv data-dir="scale"><div class="n" data-count="[N]">[N]</div><div class="l">Generations of Silsila</div></div>
+        <div class="stat" data-rv data-dir="scale"><div class="n" data-count="[N]">[N]</div><div class="l">Photographs Archived</div></div>
+        <div class="stat" data-rv data-dir="scale"><div class="n" data-count="[N]">[N]</div><div class="l">Books in the Library</div></div>
+        <div class="stat" data-rv data-dir="scale"><div class="n" data-count="[N]">[N]</div><div class="l">Annual Programmes</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note" data-rv><b>Prototype note:</b> every photo block is an animated placeholder. Scroll to see the reveal motion; hover cards and gallery tiles for the micro-interactions.</div>
+      <div class="sechead center" data-rv>
+        <span class="kicker">Ziyarat</span>
+        <h3>Glimpses of the Dargah</h3>
+        <p>A short selection from the archive. The full gallery has its own tab.</p>
+      </div>
+      <div class="mosaic">
+        <div class="cell sp4" data-rv data-dir="left"><div class="ph"><span>Shrine Exterior</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv data-dir="right"><div class="ph"><span>Inner Sanctum</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Urs Gathering</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Langar Khana</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Night View</span></div><div class="ov"><span>[Caption]</span></div></div>
+      </div>
+      <div style="text-align:center;margin-top:34px" data-rv><button class="btn primary" onclick="go('gallery')">Open Full Gallery</button></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Silsila</span><h3>The Gadi Nasheen</h3>
+        <p>The custodians of the shrine, past and present.</p></div>
+      <div class="grid g3">
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div>
+          <div class="body"><span class="badge">Founder</span><h4>[Name of Founder]</h4><p>[Years] &middot; First Sajjada Nasheen</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div>
+          <div class="body"><span class="badge">Second Custodian</span><h4>[Name]</h4><p>[Years]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div>
+          <div class="body"><span class="badge amber">Present</span><h4>[Name]</h4><p>[Year] &ndash; Present</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Ziyarat Guide</span><h3>Location &amp; Timings</h3></div>
+      <div class="grid g2" style="align-items:center;gap:44px">
+        <div class="mapbox" data-rv data-dir="left"><span style="font-size:.64rem;letter-spacing:2.2px;text-transform:uppercase;font-weight:700">Google Map embed<br>added during development</span></div>
+        <ul class="info" data-rv data-dir="right">
+          <li><span class="ic">&#9873;</span><div><b>Address</b><span>[Full postal address of the Dargah]</span></div></li>
+          <li><span class="ic">&#9200;</span><div><b>Open Daily</b><span>[e.g. 5:00 AM &ndash; 11:00 PM]</span></div></li>
+          <li><span class="ic">&#9752;</span><div><b>Langar Timings</b><span>[Community meal timings]</span></div></li>
+          <li><span class="ic">&#9742;</span><div><b>Contact</b><span>[Phone] &middot; [WhatsApp] &middot; [Email]</span></div></li>
+          <li><span class="ic">&#9906;</span><div><b>Getting Here</b><span>[Nearest stop / station / landmark]</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== GALLERY ==================== -->
+<div class="panel" id="p-gallery">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Album</span><h3>Photo Gallery</h3>
+        <p>Filter by album. A click opens the full-screen viewer in the live site.</p></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:38px" data-rv>
+        <button class="btn chip on">All</button><button class="btn chip">The Shrine</button>
+        <button class="btn chip">Urs &amp; Events</button><button class="btn chip">Langar</button><button class="btn chip">Historical</button>
+      </div>
+      <div class="mosaic">
+        <div class="cell sp3" data-rv><div class="ph"><span>Photo 01</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp3" data-rv><div class="ph"><span>Photo 02</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 03</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 04</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 05</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp4" data-rv><div class="ph"><span>Photo 06</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 07</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 08</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 09</span></div><div class="ov"><span>[Caption]</span></div></div>
+        <div class="cell sp2" data-rv><div class="ph"><span>Photo 10</span></div><div class="ov"><span>[Caption]</span></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== GADI NASHEEN ==================== -->
+<div class="panel" id="p-gadi">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Custodians</span><h3>Gadi Nasheen</h3>
+        <p>Portrait, dates and a short life account for each custodian of the Gadi.</p></div>
+      <div class="gn" data-rv>
+        <div class="av"><div class="ph"><span>Photo</span></div></div>
+        <div><span class="badge amber">Present Custodian</span><h4>[Name of Current Gadi Nasheen]</h4>
+          <p>[Short biography &mdash; education, bai&rsquo;at, the year he took the Gadi, and the work he leads today.]</p></div>
+        <div class="yr">[Year] &ndash; Now</div>
+      </div>
+      <div class="gn" data-rv>
+        <div class="av"><div class="ph"><span>Photo</span></div></div>
+        <div><span class="badge">Founder</span><h4>[Name of Founder]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="yr">[Years]</div>
+      </div>
+      <div class="gn" data-rv>
+        <div class="av"><div class="ph"><span>Photo</span></div></div>
+        <div><span class="badge">Second Custodian</span><h4>[Name]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="yr">[Years]</div>
+      </div>
+      <div class="gn" data-rv>
+        <div class="av"><div class="ph"><span>Photo</span></div></div>
+        <div><span class="badge">Third Custodian</span><h4>[Name]</h4>
+          <p>[Short biography placeholder.]</p></div>
+        <div class="yr">[Years]</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== SHAJRA ==================== -->
+<div class="panel" id="p-shajra">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Silsila Shareef</span><h3>Shajra</h3>
+        <p>The spiritual chain, generation by generation. The connecting line draws itself as you scroll.</p></div>
+      <div class="chain" id="chain">
+        <div class="track"><i></i></div>
+        <div class="node" data-rv><span class="kicker">Generation 1</span><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="node" data-rv><span class="kicker">Generation 2</span><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="node" data-rv><span class="kicker">Generation 3</span><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="node" data-rv><span class="kicker">Generation 4</span><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="node" data-rv><span class="kicker">Generation 5</span><h4>[Name]</h4><p>[Title / place / year]</p></div>
+        <div class="node" data-rv><span class="kicker">Present</span><h4>[Name]</h4><p>Current Gadi Nasheen</p></div>
+      </div>
+      <div style="text-align:center;margin-top:34px" data-rv><button class="btn primary">Download Full Shajra (PDF)</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== EVENTS ==================== -->
+<div class="panel" id="p-events">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Taqreebaat</span><h3>Events &amp; Urs Calendar</h3>
+        <p>Dates shown in Hijri with the Gregorian equivalent.</p></div>
+      <div class="ev" data-rv><div class="dt"><b>12</b><small>Rabi</small></div>
+        <div><h4>[Annual Urs Mubarak]</h4><p>[Timings, programme, langar arrangements.]</p></div><span class="badge amber">Annual</span></div>
+      <div class="ev" data-rv><div class="dt"><b>27</b><small>Rajab</small></div>
+        <div><h4>[Shab-e-Meraj Mehfil]</h4><p>[Short description placeholder.]</p></div><span class="badge amber">Annual</span></div>
+      <div class="ev" data-rv><div class="dt"><b>15</b><small>Shaban</small></div>
+        <div><h4>[Shab-e-Barat Programme]</h4><p>[Short description placeholder.]</p></div><span class="badge amber">Annual</span></div>
+      <div class="ev" data-rv><div class="dt"><b>01</b><small>Ramzan</small></div>
+        <div><h4>[Daily Iftar &amp; Langar]</h4><p>[Short description placeholder.]</p></div><span class="badge">Monthly</span></div>
+      <div class="ev" data-rv><div class="dt"><b>&mdash;</b><small>Thu</small></div>
+        <div><h4>[Weekly Mehfil-e-Zikr]</h4><p>[Every Thursday after Maghrib &mdash; placeholder.]</p></div><span class="badge">Weekly</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== LIBRARY ==================== -->
+<div class="panel" id="p-library">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Kutub Khana</span><h3>Library</h3>
+        <p>Books, malfuzat, naat collections and recorded bayan.</p></div>
+      <div class="grid g3">
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Book Title 1]</h4><p>[Author] &middot; Urdu &middot; [pages]</p><span class="dl">Read / Download <i>&rarr;</i></span></div></div>
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Book Title 2]</h4><p>[Author] &middot; Urdu &middot; [pages]</p><span class="dl">Read / Download <i>&rarr;</i></span></div></div>
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Book Title 3]</h4><p>[Author] &middot; Urdu &middot; [pages]</p><span class="dl">Read / Download <i>&rarr;</i></span></div></div>
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Malfuzat Collection]</h4><p>[Compiler] &middot; Urdu</p><span class="dl">Read / Download <i>&rarr;</i></span></div></div>
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Naat Sharif Collection]</h4><p>[Compiler] &middot; Urdu</p><span class="dl">Read / Download <i>&rarr;</i></span></div></div>
+        <div class="book" data-rv><div class="ph"><span>Cover</span></div><div class="body"><h4>[Audio Bayan Archive]</h4><p>[Speaker] &middot; MP3</p><span class="dl">Listen <i>&rarr;</i></span></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PEOPLE ==================== -->
+<div class="panel" id="p-people">
+  <section class="block">
+    <div class="wrap">
+      <div class="sechead center" data-rv><span class="kicker">Mashaheer</span><h3>Famous Personalities</h3>
+        <p>Scholars, poets and devotees connected with the Dargah and the tribe.</p></div>
+      <div class="grid g4">
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Scholar</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Poet</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Sufi</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Philanthropist</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Author</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Qari</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Naat Khwan</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+        <div class="card" data-rv><div class="media"><div class="ph tall"><span>Portrait</span></div></div><div class="body"><span class="badge">Elder</span><h4>[Name]</h4><p>[One-line note.]</p></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h5>Sarvar Nohh Dargah</h5><p>[One or two lines about the Dargah, its address and its mission. Placeholder text.]</p></div>
+      <div><h5>Sections</h5>
+        <a href="#" onclick="go('gallery');return false">Photo Gallery</a>
+        <a href="#" onclick="go('gadi');return false">Gadi Nasheen</a>
+        <a href="#" onclick="go('shajra');return false">Shajra</a>
+        <a href="#" onclick="go('events');return false">Events</a>
+        <a href="#" onclick="go('library');return false">Library</a></div>
+      <div><h5>Contact</h5><a>[Phone]</a><a>[WhatsApp]</a><a>[Email]</a><a>[Facebook / YouTube]</a></div>
+    </div>
+    <div class="copy">&copy; <span id="yr"></span> Sarvar Nohh Dargah &nbsp;&middot;&nbsp; Prototype 4 &mdash; Silsila</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var tabs   = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pill   = document.getElementById('pill');
+
+  /* ---- sliding pill indicator ---- */
+  function movePill(){
+    var active = document.querySelector('.tab[aria-selected=true]');
+    if(!active) return;
+    pill.style.width = active.offsetWidth + 'px';
+    pill.style.transform = 'translateX(' + active.offsetLeft + 'px)';
+  }
+
+  /* ---- reveal on scroll ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -60px 0px'});
+
+  function observePanel(panel){
+    var items = panel.querySelectorAll('[data-rv]');
+    items.forEach(function(el, i){
+      el.style.transitionDelay = Math.min(i * 60, 420) + 'ms';
+      io.observe(el);
+    });
+    var chain = panel.querySelector('#chain');
+    if(chain){
+      var ci = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ chain.classList.add('in'); ci.unobserve(chain); } });
+      }, {threshold:.15});
+      ci.observe(chain);
+    }
+  }
+
+  window.go = function(id){
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', t.dataset.t === id ? 'true' : 'false'); });
+    panels.forEach(function(p){
+      var on = p.id === 'p-' + id;
+      p.classList.toggle('active', on);
+      if(on){
+        p.querySelectorAll('[data-rv]').forEach(function(el){ el.classList.remove('in'); });
+        observePanel(p);
+      }
+    });
+    movePill();
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ go(t.dataset.t); }); });
+
+  /* ---- nav shrink + scroll progress ---- */
+  var nav = document.getElementById('nav'), prog = document.getElementById('prog');
+  function onScroll(){
+    var y = window.scrollY;
+    nav.classList.toggle('stuck', y > 12);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+
+    /* subtle parallax on the hero image */
+    document.querySelectorAll('[data-par]').forEach(function(el){
+      el.style.transform = 'translateY(' + (y * parseFloat(el.dataset.par) * -1) + 'px)';
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', movePill);
+
+  /* ---- radial hover light on buttons ---- */
+  document.addEventListener('mousemove', function(e){
+    var b = e.target.closest ? e.target.closest('.btn') : null;
+    if(!b) return;
+    var r = b.getBoundingClientRect();
+    b.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+
+  /* ---- word-by-word hero headline ---- */
+  var line = ['A', 'Place', 'of', '<em>Stillness</em>', 'and', 'Remembrance'];
+  document.getElementById('heroline').innerHTML = line.map(function(w, i){
+    return '<span class="word" style="animation-delay:' + (120 + i * 85) + 'ms">' + w + '</span>';
+  }).join(' ');
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  observePanel(document.getElementById('p-home'));
+  requestAnimationFrame(movePill);
+  onScroll();
+})();
+</script>
+</body>
+</html>
